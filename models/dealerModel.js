@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const dealerSchema = new mongooose.Schema({
+const dealerSchema = new mongoose.Schema({
     dealerId : {type:String,required:true,unique:true},
     dealerName :{type:String,required:true},
     dealerEmail : {type:String,required:true,unique:true,lowercase:true},
@@ -10,4 +10,4 @@ const dealerSchema = new mongooose.Schema({
 
 const Dealer = mongoose.model("Dealer", dealerSchema);
 
-module.exports = Dealer;
+export default Dealer;
