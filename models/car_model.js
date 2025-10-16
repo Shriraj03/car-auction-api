@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose,{Schema} from "mongoose"
 
-const carSchema = new mongoose.Schema({
+const carSchema = new Schema({
     carID: {
         type: Number,
         required: true,
@@ -22,4 +22,4 @@ const carSchema = new mongoose.Schema({
 
 },{timestamps: true});
 
-module.export = mongoose.model("Car", carSchema)
+export const Car= mongoose.model("Car", carSchema)
