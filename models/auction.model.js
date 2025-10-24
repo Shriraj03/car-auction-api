@@ -1,6 +1,11 @@
 import mongoose,{Schema} from "mongoose"
 
 const auctionSchema = new Schema({
+    auctionId:{
+        type: String,
+        required: true,
+        unique: true,
+    },
     startingPrice:{
         type: Number,
         required: true,
