@@ -22,6 +22,11 @@ const auctionSchema = new Schema({
         type: String,
         enum: ["Draft","Scheduled","Active","Closed","Completed","Cancelled"],
         required: true
+    },
+    carId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Car",
+        required: true
     }
 },{timestamps: true})
 
