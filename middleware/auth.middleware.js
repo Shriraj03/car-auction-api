@@ -1,4 +1,3 @@
-// /middlewares/auth.middleware.js
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { apiError } from "../utils/apiError.js";
 import Dealer from "../models/dealer.model.js";
