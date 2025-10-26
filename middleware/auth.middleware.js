@@ -1,6 +1,5 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { apiError } from "../utils/apiError.js";
-import Dealer from "../models/dealer.model.js";
 import jwt from "jsonwebtoken";
 
 export const authMiddleware = asyncHandler(async (req, res, next) => {
@@ -12,15 +11,14 @@ export const authMiddleware = asyncHandler(async (req, res, next) => {
             throw new apiError(401, "Unauthorized request");
         }
         
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+        const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
         
-        const dealer = await Dealer.findById(decodedToken?._id).select("-dealerPassword");
+        // Set the user info from token in the request
+        req.user = {
+            _id: decodedToken._id,
+            username: decodedToken.username
+        };
         
-        if (!dealer) {
-            throw new apiError(401, "Invalid Access Token");
-        }
-        
-        req.dealer = dealer;
         next();
     } catch (error) {
         throw new apiError(401, error?.message || "Invalid access token");
