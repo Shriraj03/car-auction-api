@@ -23,6 +23,30 @@ dealerSchema.methods.isPasswordCorrect = async function(dealerPassword){
     return await bcrypt.compare(dealerPassword,this.dealerPassword)
 }
 
+// Generate access token
+dealerSchema.methods.generateAccessToken = function(){
+    return jwt.sign({
+        dealerId: this.dealerId,
+        dealerName: this.dealerName,
+        dealerEmail: this.dealerEmail
+    },
+    process.env.ACCESS_TOKEN_SECRET,
+    {expiresIn: process.env.ACCESS_TOKEN_EXPIRY}
+    )
+}
+
+// Generate refresh token
+dealerSchema.methods.generateRefreshToken = function(){
+    return jwt.sign({
+        dealerId: this.dealerId,
+        dealerName: this.dealerName,
+        dealerEmail: this.dealerEmail
+    },
+    process.env.REFRESH_TOKEN_SECRET,
+    {expiresIn: process.env.REFRESH_TOKEN_EXPIRY}
+    )
+}
+
 
 
 
