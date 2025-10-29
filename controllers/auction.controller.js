@@ -5,6 +5,7 @@ import { Dealer } from "../models/dealer.model.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { apiError } from "../utils/apiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { placeBid as createBid } from "./bid.controller.js";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { v4 as uuidv4 } from 'uuid';
@@ -12,11 +13,6 @@ import { v4 as uuidv4 } from 'uuid';
 // Generate unique auction ID using UUID
 const generateAuctionId = () => {
     return `AUC-${uuidv4()}`;
-};
-
-// Generate unique bid ID using UUID
-const generateBidId = () => {
-    return `BID-${uuidv4()}`;
 };
 
 // 1. POST /api/v1/auction/createAuction - Creates a new auction
@@ -157,71 +153,9 @@ const getWinnerBid = asyncHandler(async (req, res) => {
 
 // 4. POST /api/v1/auction/placeBids - Allows a dealer to place a bid
 const placeBid = asyncHandler(async (req, res) => {
-    const { auctionId, bidAmount, dealerId } = req.body;
-
-    // Validate required fields
-    if (!auctionId || !bidAmount || !dealerId) {
-        throw new apiError(400, "All fields are required: auctionId, bidAmount, dealerId");
-    }
-
-    // Validate auction exists and is active
-    const auction = await Auction.findById(auctionId);
-    if (!auction) {
-        throw new apiError(404, "Auction not found");
-    }
-
-    if (auction.status !== "Active") {
-        throw new apiError(400, "Auction is not active. Cannot place bid.");
-    }
-
-    // Check if auction has ended
-    const now = new Date();
-    if (auction.endTime <= now) {
-        throw new apiError(400, "Auction has ended. Cannot place bid.");
-    }
-
-    // Validate dealer exists
-    const dealer = await Dealer.findById(dealerId);
-    if (!dealer) {
-        throw new apiError(404, "Dealer not found");
-    }
-
-    // Validate bid amount
-    if (bidAmount <= 0) {
-        throw new apiError(400, "Bid amount must be greater than 0");
-    }
-
-    // Get current highest bid
-    const currentHighestBid = await Bid.findOne({ auctionId: auctionId })
-        .sort({ bidAmount: -1 });
-
-    // Determine minimum bid amount
-    const minimumBid = currentHighestBid ? currentHighestBid.bidAmount : auction.startingPrice;
-    
-    if (bidAmount <= minimumBid) {
-        throw new apiError(400, `Bid amount must be higher than current highest bid: ${minimumBid}`);
-    }
-
-    // Create the bid
-    const bidId = generateBidId();
-    const previousBid = currentHighestBid ? currentHighestBid.bidAmount : 0;
-
-    const bid = await Bid.create({
-        bidId,
-        bidAmount,
-        previousBid,
-        bidTime: now,
-        dealerId,
-        auctionId
-    });
-
-    const populatedBid = await Bid.findById(bid._id)
-        .populate('dealerId', 'dealerName dealerEmail dealerId')
-        .populate('auctionId', 'auctionId startingPrice status');
-
-    return res.status(201).json(
-        new apiResponse(201, populatedBid, "Bid placed successfully")
-    );
+    // Delegate to the bid controller's placeBid function
+    // This avoids code duplication and maintains separation of concerns
+    return await createBid(req, res);
 });
 
 // 5. POST /api/v1/auction/token - Generate token with static credentials
