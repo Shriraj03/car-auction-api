@@ -4,7 +4,7 @@ import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { Bid } from "../models/bid.model.js";
 import { Auction } from "../models/auction.model.js";
-import Dealer from "../models/dealer.model.js";
+import {Dealer} from "../models/dealer.model.js";
 import { v4 as uuidv4 } from "uuid";
 
 // Place a bid 

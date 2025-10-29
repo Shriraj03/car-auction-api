@@ -47,12 +47,7 @@ dealerSchema.methods.generateRefreshToken = function(){
     )
 }
 
+export const Dealer = mongoose.model("Dealer", dealerSchema);
 
-
-
-
-
-const Dealer = mongoose.model("Dealer", dealerSchema);
-
-export default Dealer;
+ 
 
