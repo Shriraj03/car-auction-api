@@ -13,8 +13,10 @@ app.use(express.urlencoded({extended: true, limit:"20kb"}))
 app.use(express.static("public"))
 app.use(cookieParser())
 
+// Routes import
+import auctionRouter from "./routes/auction.routes.js"
 
-
-
+// Routes declaration
+app.use("/api/v1/auction", auctionRouter)
 
 export default app
