@@ -35,7 +35,7 @@ export const UpdateCar  = asyncHandler(async (req, res) => {
         throw new apiError(400, "all fields are required");
     }
 
-
+    // find and update 
     const GetCarData = await Car.findOneAndUpdate({ carID }, { make, model, year }, { new: true });
     if (!GetCarData) {
         throw new apiError(404, "Car not found");
@@ -59,7 +59,7 @@ export const DeleteCarData = asyncHandler(async (req, res) => {
 
 
     await Car.findOneAndDelete({ carID });
-
+    // return 200
     return res
         .status(200)
         .json(new apiResponse(200, {}, "Car Data deleted successfully"));
@@ -71,11 +71,11 @@ export const GetCarData = asyncHandler(async (req, res) => {
     const { carID } = req.params;
 
     const CarData = await Car.findOne({carID})
-
+    //if data not found
     if (!CarData) {
         throw new apiError(404, "Car not found");
     }
-
+    // return 200
     return res
         .status(200)
         .json(new apiResponse(200, { CarData }, "CarData fetched successfully"));
