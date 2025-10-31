@@ -1,23 +1,27 @@
 // /routes/dealer.routes.js
 import { Router } from "express";
-import { asyncHandler } from "../utils/asyncHandler.js";
+import {
+    registerDealer,
+    loginDealer,
+    logoutDealer,
+    getDealerProfile,
+    updateDealerProfile,
+    getDealerAuctions,
+    joinAuction
+} from "../controllers/dealer.controller.js";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-// Authentication routes
+// Public routes
 router.post("/register", registerDealer);
 router.post("/login", loginDealer);
-router.post("/logout", authMiddleware, logoutDealer);
-router.get("/refresh-token", refreshAccessToken);
 
-// Dealer profile routes
+// Protected routes
+router.post("/logout", authMiddleware, logoutDealer);
 router.get("/profile", authMiddleware, getDealerProfile);
 router.patch("/profile", authMiddleware, updateDealerProfile);
-router.delete("/delete-account", authMiddleware, deleteDealer);
-
-// Dealer auction management
 router.get("/auctions", authMiddleware, getDealerAuctions);
-router.get("/bids", authMiddleware, getDealerBids);
+router.post("/auctions/:auctionId/join", authMiddleware, joinAuction);
 
 export default router;

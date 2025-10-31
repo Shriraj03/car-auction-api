@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser"
 const app = express()
 
 app.use(cors({
-    origin: process.env.PORT,
+    origin: process.env.CORS_ORIGIN,
     credentials: true
 }))
 app.use(express.json({limit: "20kb"}))
@@ -17,6 +17,7 @@ app.use(cookieParser())
 import auctionRouter from "./routes/auction.routes.js"
 import CarRouter from "./routes/car.routes.js"
 import bidRouter from "./routes/bid.routes.js"
+import dealerRouter from "./routes/dealer.routes.js"
 
 // Routes declaration
 app.use("/api/v1/auction", auctionRouter)

@@ -8,8 +8,7 @@ const dealerSchema = new mongoose.Schema({
     dealerEmail : {type:String,required:true,unique:true,lowercase:true},
     dealerPassword : {type:String,required: true, unique: true},
     auctions :[{type:mongoose.Schema.Types.ObjectId,ref:"Auction"}],
-    TimeStamps : {createdAt:true,updatedAt:false}
-});
+}, { timestamps: { updatedAt: false } });
 
 //Hashing the password before saving
 dealerSchema.pre("save",async function (next) {
