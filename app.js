@@ -16,9 +16,12 @@ app.use(cookieParser())
 // Routes import
 import auctionRouter from "./routes/auction.routes.js"
 import CarRouter from "./routes/car.routes.js"
+import bidRouter from "./routes/bid.routes.js"
 
 // Routes declaration
 app.use("/api/v1/auction", auctionRouter)
 app.use("/api/v1/Car",CarRouter)
+app.use("/api/v1/bid",bidRouter)
+app.use("/api/v1/dealer",dealerRouter)
 
 export default app
