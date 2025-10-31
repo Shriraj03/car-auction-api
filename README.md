@@ -1,12 +1,30 @@
 # car-auction-api
 Backend for a car auction system with the following api endpoints
-1. POST /api/v1/dealer/register - Register a new dealer with name, email, and password
-2. POST /api/v1/dealer/login - Login as dealer using email and password
-3. POST /api/v1/car - Add a new car with make, model, and year
-4. GET /api/v1/car - Get all cars
-5. POST /api/v1/auction/createAuction - Create auction for a car with starting price and time window
-6. PATCH /api/v1/auction/status/{auctionId} - Update auction status (activate/close)
-7. GET /api/v1/auction - Get all auctions with optional status filter
-8. GET /api/v1/auction/{auctionId}/winner-bid - Get highest bid for an auction
-9. POST /api/v1/auction/placeBids - Place bid on active auction
-10. POST /api/v1/auction/token - Generate admin token for authentication
+### Authentication
+- `POST /api/v1/auction/token`: Generate token with static credentials (Admin/Admin)
+### Auctions
+- `POST /api/v1/auction/createAuction`: Create a new auction
+- `PATCH /api/v1/auction/status/{auctionId}`: Update auction status
+- `GET /api/v1/auction/{auctionId}/winner-bid`: Retrieve winning bid info
+### Bids
+- `POST /api/v1/auction/placeBids`: Place a bid on an active auction
+- `PATCH /api/v1/bid/{bidId}`: Update a bid (own bids only)
+- `DELETE /api/v1/bid/{bidId}`: Delete a bid (own bids only)
+### Dealers
+- `POST /api/v1/dealer/register`: Dealer registration
+- `POST /api/v1/dealer/login`: Dealer authentication
+- `GET /api/v1/dealer/profile`: Get dealer profile
+- `PATCH /api/v1/dealer/profile`: Update dealer profile
+## Authentication & Security Features
+- JWT-based authentication
+- Password hashing with bcrypt
+- Access and refresh token generation
+- Protected routes with middleware verification
+
+## Bidding Process Flow
+1. Dealer registers and authenticates
+2. Dealer browses active auctions
+3. Dealer selects an auction and places a bid
+4. System validates bid is higher than the current highest
+5. Auction closes at the end time
+6. The winner is determined as the highest bidder
