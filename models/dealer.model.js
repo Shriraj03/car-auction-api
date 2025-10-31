@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 
 const dealerSchema = new mongoose.Schema({
     dealerId : {type:String,required:true,unique:true},
